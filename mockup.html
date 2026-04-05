@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recession Ready — Are You Prepared?</title>
+<meta name="description" content="A life audit built on lessons from the 1930s Great Depression. Find out if you'd survive a modern economic collapse.">
+<meta property="og:title" content="Recession Ready — Are You Prepared?">
+<meta property="og:description" content="8 questions. An honest score. A personalized survival playbook.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F5F0E8;
+    --ink: #1A1916;
+    --ink-muted: #5C5955;
+    --ink-faint: #9B9790;
+    --amber: #B8760F;
+    --amber-light: #F7EDDA;
+    --amber-dark: #7A4E08;
+    --red: #9B2B2B;
+    --red-light: #F9EDED;
+    --green: #1D6B4A;
+    --green-light: #EAF5EF;
+    --blue: #1A4D7C;
+    --blue-light: #EAF1FA;
+    --border: #E0DAD0;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--amber);
+    letter-spacing: .05em;
+    text-decoration: none;
+  }
+  .nav-meta {
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-family: var(--mono);
+  }
+
+  /* LAYOUT */
+  .page { max-width: 700px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* SCREENS */
+  .screen { display: none; padding: 3rem 0 4rem; }
+  .screen.active { display: block; }
+
+  /* HERO */
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.25rem;
+  }
+  .hero-h {
+    font-family: var(--serif);
+    font-size: clamp(38px, 6vw, 58px);
+    font-weight: 400;
+    line-height: 1.08;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+  .hero-h em { font-style: italic; color: var(--amber); }
+  .hero-body {
+    font-size: 16px;
+    color: var(--ink-muted);
+    line-height: 1.75;
+    max-width: 520px;
+    margin-bottom: 2rem;
+  }
+  .hero-ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .hero-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+  }
+  .hero-stat-n {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--ink);
+    display: block;
+  }
+  .hero-stat-l {
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    padding: 11px 24px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+  }
+  .btn-primary:hover { background: #333; }
+  .btn-primary:active { transform: scale(.98); }
+
+  .btn-ghost {
+    padding: 11px 22px;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .btn-ghost:hover { border-color: var(--ink-muted); background: rgba(26,25,22,.04); }
+
+  .btn-amber {
+    padding: 11px 24px;
+    background: var(--amber);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-amber:hover { background: var(--amber-dark); }
+  .btn-amber:disabled { opacity: .4; cursor: default; }
+
+  /* HISTORY */
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: .75rem;
+  }
+  .section-h {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: .75rem;
+    line-height: 1.2;
+  }
+  .section-body {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.75;
+    margin-bottom: 1.75rem;
+    max-width: 560px;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 540px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .breakdown-grid { grid-template-columns: 1fr; }
+  }
+
+  .compare-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    background: #fff;
+  }
+  .compare-card-h {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: .75rem;
+    font-weight: 400;
+  }
+  .compare-card ul {
+    list-style: none;
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    line-height: 2;
+  }
+  .compare-card ul li::before { content: "— "; }
+
+  .callout {
+    border-left: 3px solid var(--amber);
+    padding: 1rem 1.25rem;
+    background: var(--amber-light);
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    color: var(--amber-dark);
+    line-height: 1.7;
+    margin: 1.5rem 0;
+  }
+
+  /* QUIZ */
+  .prog-wrap {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  .prog-fill {
+    height: 2px;
+    background: var(--amber);
+    border-radius: 2px;
+    transition: width .4s cubic-bezier(.4,0,.2,1);
+  }
+
+  .q-step {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+  .q-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: .35rem;
+  }
+  .q-hint {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+  .opt {
+    text-align: left;
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: border-color .12s, background .12s;
+  }
+  .opt:hover { border-color: var(--ink-muted); background: var(--cream); }
+  .opt.sel {
+    border-color: var(--amber);
+    border-width: 2px;
+    background: var(--amber-light);
+    color: var(--amber-dark);
+    padding: 12px 15px;
+  }
+
+  .nav-btns { display: flex; gap: 8px; align-items: center; }
+
+  /* RESULTS */
+  .score-hero {
+    text-align: center;
+    padding: 2rem 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .score-number {
+    font-family: var(--serif);
+    font-size: 80px;
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: .25rem;
+  }
+  .score-denom {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .grade-badge {
+    display: inline-block;
+    padding: 5px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .02em;
+    margin-bottom: 1rem;
+  }
+  .score-summary {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .results-section-h {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--ink-faint);
+    margin-bottom: .75rem;
+  }
+
+  .breakdown-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 2rem;
+  }
+  .bd-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .875rem 1rem;
+  }
+  .bd-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    margin-bottom: 4px;
+  }
+  .bd-val {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .bd-bar-bg { background: var(--border); height: 3px; border-radius: 2px; }
+  .bd-bar-fill { height: 3px; border-radius: 2px; }
+
+  .recs-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .recs-card-h {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  .rec-item {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.65;
+    padding: 8px 0 8px 1.25rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-item::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    font-size: 14px;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  /* SHARE TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--cream);
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    opacity: 0;
+    transition: all .25s;
+    pointer-events: none;
+    font-family: var(--sans);
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">recession-ready.fyi</span>
+  <span class="nav-meta">8 questions · ~3 min</span>
+</nav>
+
+<div class="page">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="screen active" id="s-hero">
+    <p class="hero-eyebrow">Great Depression survival audit — 2025 edition</p>
+    <h1 class="hero-h">Are you <em>recession</em><br>ready?</h1>
+    <p class="hero-body">A life audit built on hard lessons from the 1930s Great Depression. Enter your real situation — assets, debt, skills, flexibility — and get an honest score plus a personalized survival playbook.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="go('s-history')">Learn the history first →</button>
+      <button class="btn-ghost" onclick="startQuiz()">Skip straight to the audit</button>
+    </div>
+    <hr class="hero-divider">
+    <div class="hero-stats">
+      <div>
+        <span class="hero-stat-n">8</span>
+        <span class="hero-stat-l">Questions</span>
+      </div>
+      <div>
+        <span class="hero-stat-n">~3</span>
+        <span class="hero-stat-l">Minutes</span>
+      </div>
+      <div>
+        <span class="hero-stat-n">0</span>
+        <span class="hero-stat-l">Data stored</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HISTORY ═══ -->
+  <section class="screen" id="s-history">
+    <p class="section-eyebrow">1929 – 1939</p>
+    <h2 class="section-h">The crash that rewrote the rules</h2>
+    <p class="section-body">The Great Depression lasted a full decade. Unemployment peaked at 25%. GDP fell 30%. Nine thousand banks failed. What destroyed people wasn't the crash itself — it was what they were carrying going in, and how little flexibility they had to adapt.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <p class="compare-card-h" style="color:var(--red)">What killed people financially</p>
+        <ul>
+          <li>Margin debt wiped overnight</li>
+          <li>Bank runs — no FDIC protection</li>
+          <li>Fixed mortgage debt in deflation</li>
+          <li>One-skill workers, nowhere to go</li>
+          <li>Zero safety net (no UI, no SNAP)</li>
+          <li>Geographic isolation</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <p class="compare-card-h" style="color:var(--green)">What saved people</p>
+        <ul>
+          <li>Zero debt going in</li>
+          <li>Tangible skills (fix, farm, heal)</li>
+          <li>Multiple small income streams</li>
+          <li>Hard cash or gold</li>
+          <li>Barter networks and community</li>
+          <li>Willingness to relocate</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <p class="compare-card-h" style="color:var(--blue)">Today: structural differences</p>
+        <ul>
+          <li>FDIC protects up to $250k/account</li>
+          <li>Fed can print (deflation less likely)</li>
+          <li>Unemployment insurance exists</li>
+          <li>Remote work = real geographic choice</li>
+          <li>Gig economy as an income floor</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <p class="compare-card-h" style="color:var(--amber)">Today: new vulnerabilities</p>
+        <ul>
+          <li>401k locked (10% early penalty)</li>
+          <li>Digital bank runs happen in hours</li>
+          <li>Consulting is cut first in downturns</li>
+          <li>AI displacing knowledge workers</li>
+          <li>Dollar devaluation risk abroad</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      A modern depression would likely look like 15–25% unemployment, equities down 60–70%, and a decade of stagnation. Not breadlines — a slow, grinding middle-class squeeze where the pain is invisible until it isn't.
+    </div>
+
+    <button class="btn-primary" onclick="startQuiz()">Start the audit →</button>
+  </section>
+
+  <!-- ═══ QUIZ ═══ -->
+  <section class="screen" id="s-quiz">
+    <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+    <p class="q-step" id="q-step">Question 1 of 8</p>
+    <h2 class="q-title" id="q-title"></h2>
+    <p class="q-hint" id="q-hint"></p>
+    <div class="options" id="opts"></div>
+    <div class="nav-btns">
+      <button class="btn-ghost" id="btn-back" style="display:none" onclick="prevQ()">← Back</button>
+      <button class="btn-amber" id="btn-next" onclick="nextQ()" disabled>Next →</button>
+    </div>
+  </section>
+
+  <!-- ═══ RESULTS ═══ -->
+  <section class="screen" id="s-results">
+    <div class="score-hero">
+      <div class="score-number" id="r-score">—</div>
+      <div class="score-denom">out of 100</div>
+      <div><span class="grade-badge" id="r-badge">—</span></div>
+      <p class="score-summary" id="r-summary"></p>
+    </div>
+
+    <p class="results-section-h">Score breakdown</p>
+    <div class="breakdown-grid" id="r-breakdown"></div>
+
+    <div class="recs-card">
+      <h3 class="recs-card-h">Your 90-day playbook</h3>
+      <div id="r-recs"></div>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn-primary" onclick="shareScore()">Share your score</button>
+      <button class="btn-ghost" onclick="startQuiz()">Retake the audit</button>
+      <button class="btn-ghost" onclick="go('s-history')">Review history</button>
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<footer>
+  Built from lessons learned the hard way, 1929–1939. · No data collected or stored.
+</footer>
+
+<div class="toast" id="toast">Link copied to clipboard</div>
+
+<script>
+const Qs = [
+  {
+    step: 'Question 1 of 8',
+    title: 'Who depends on you?',
+    hint: 'Consider both financial and care responsibilities. Dependents reduce flexibility and raise the bar on everything else.',
+    opts: [
+      { t: 'Just me — no dependents', s: 10 },
+      { t: 'Me + a partner, no kids or elderly', s: 8 },
+      { t: 'Me + kids (any age)', s: 5 },
+      { t: 'Me + elderly parents or family members', s: 4 },
+      { t: 'Me + kids and elderly dependents', s: 2 },
+    ]
+  },
+  {
+    step: 'Question 2 of 8',
+    title: 'How much liquid runway do you have?',
+    hint: 'Cash, HYSA, checking accounts — not retirement accounts. This is your actual survival buffer when income stops.',
+    opts: [
+      { t: 'Less than 1 month of expenses', s: 0 },
+      { t: '1–2 months of expenses', s: 5 },
+      { t: '3–5 months of expenses', s: 12 },
+      { t: '6–11 months of expenses', s: 18 },
+      { t: '12+ months of expenses', s: 22 },
+    ]
+  },
+  {
+    step: 'Question 3 of 8',
+    title: 'What does your debt picture look like?',
+    hint: 'Fixed debt was the 1930s killer. People couldn\'t adapt because monthly payments kept coming regardless of income.',
+    opts: [
+      { t: 'Zero debt — completely clean', s: 20 },
+      { t: 'Credit cards only, manageable balance', s: 15 },
+      { t: 'Car loan or student loans', s: 10 },
+      { t: 'Mortgage with solid equity (30%+)', s: 8 },
+      { t: 'Multiple loans, or underwater on an asset', s: 2 },
+    ]
+  },
+  {
+    step: 'Question 4 of 8',
+    title: 'How do you earn your income?',
+    hint: 'A single income source is a single point of failure. Multiple streams are the oldest financial survival mechanism.',
+    opts: [
+      { t: 'Multiple streams — freelance, investments, side businesses', s: 15 },
+      { t: 'Self-employed or consulting', s: 12 },
+      { t: 'Single employer in an essential industry', s: 10 },
+      { t: 'Single employer in a discretionary industry', s: 5 },
+      { t: 'Currently between gigs or unemployed', s: 0 },
+    ]
+  },
+  {
+    step: 'Question 5 of 8',
+    title: 'What industry are you in?',
+    hint: 'Essential industries contracted last and recovered first in every historical downturn. Discretionary gets hit in the first 60 days.',
+    opts: [
+      { t: 'Healthcare, utilities, government, or food production', s: 10 },
+      { t: 'Transportation, logistics, agriculture, or skilled trades', s: 9 },
+      { t: 'Tech, finance, or professional services', s: 6 },
+      { t: 'Hospitality, retail, marketing, or entertainment', s: 2 },
+    ]
+  },
+  {
+    step: 'Question 6 of 8',
+    title: 'How portable are your skills?',
+    hint: 'Can you earn money in a different city, country, or economic context using what\'s already in your head?',
+    opts: [
+      { t: 'Trade skills — I can fix, build, or grow things people always need', s: 10 },
+      { t: 'Multiple transferable skills across fields or industries', s: 9 },
+      { t: 'One strong transferable skill (software, medicine, law)', s: 6 },
+      { t: 'Highly specialized in one non-essential niche', s: 3 },
+      { t: 'Mostly role-specific — hard to apply elsewhere', s: 1 },
+    ]
+  },
+  {
+    step: 'Question 7 of 8',
+    title: 'Could you relocate to find opportunity?',
+    hint: 'Geographic arbitrage saved thousands in the 1930s. Those who could move to where jobs or low costs existed fared far better.',
+    opts: [
+      { t: 'Yes — I could move internationally if it came to it', s: 10 },
+      { t: 'Yes — I could relocate domestically without major issue', s: 7 },
+      { t: 'Possibly, but it would be difficult (family, lease, roots)', s: 4 },
+      { t: 'No — I am effectively tied to my current location', s: 1 },
+    ]
+  },
+  {
+    step: 'Question 8 of 8',
+    title: 'What is your housing situation?',
+    hint: 'Renting is more flexible than people think. Underwater mortgages are lethal when asset prices fall 30–40% and income dries up.',
+    opts: [
+      { t: 'Own my home outright — no mortgage payment', s: 3 },
+      { t: 'Renting — flexible, can leave if needed', s: 2 },
+      { t: 'Mortgage with solid equity (30%+)', s: 2 },
+      { t: 'Mortgage with little equity or high payment-to-income ratio', s: 0 },
+    ]
+  },
+];
+
+const MAX      = [10, 22, 20, 15, 10, 10, 10, 3];
+const LABELS   = ['Dependents', 'Liquid runway', 'Debt load', 'Income structure', 'Industry resilience', 'Skill portability', 'Geographic flex', 'Housing security'];
+
+let cur = 0, ans = {};
+
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startQuiz() { cur = 0; ans = {}; go('s-quiz'); renderQ(); }
+
+function renderQ() {
+  const q = Qs[cur];
+  const pct = (cur / Qs.length * 100).toFixed(0);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('q-step').textContent  = q.step;
+  document.getElementById('q-title').textContent = q.title;
+  document.getElementById('q-hint').textContent  = q.hint;
+
+  const el = document.getElementById('opts');
+  el.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt' + (ans[cur] === i ? ' sel' : '');
+    btn.textContent = o.t;
+    btn.onclick = () => pick(i);
+    el.appendChild(btn);
+  });
+
+  const nb = document.getElementById('btn-next');
+  document.getElementById('btn-back').style.display = cur > 0 ? 'inline-block' : 'none';
+  nb.textContent  = cur === Qs.length - 1 ? 'See my score →' : 'Next →';
+  nb.disabled     = ans[cur] === undefined;
+}
+
+function pick(i) {
+  ans[cur] = i;
+  document.querySelectorAll('.opt').forEach((b, idx) => b.classList.toggle('sel', idx === i));
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQ() {
+  if (ans[cur] === undefined) return;
+  if (cur < Qs.length - 1) { cur++; renderQ(); }
+  else showResults();
+}
+
+function prevQ() { if (cur > 0) { cur--; renderQ(); } }
+
+/* ── RESULTS ── */
+function showResults() {
+  go('s-results');
+
+  let total = 0;
+  const bd = Qs.map((q, i) => {
+    const earned = ans[i] !== undefined ? q.opts[ans[i]].s : 0;
+    total += earned;
+    return { earned, max: MAX[i], pct: Math.round(earned / MAX[i] * 100) };
+  });
+
+  // Grade
+  let grade, color, bg, summary;
+  if (total >= 80) {
+    grade = 'Recession ready';       color = '#1D6B4A'; bg = '#EAF5EF';
+    summary = 'Your fundamentals are solid. You have the liquidity, flexibility, and skills to navigate a prolonged downturn without catastrophic loss. Your play now is staying opportunistic — people in your position buy generational assets when others are forced to sell.';
+  } else if (total >= 60) {
+    grade = 'Cautiously positioned'; color = '#1A4D7C'; bg = '#EAF1FA';
+    summary = 'You have real strengths but identifiable gaps. A moderate recession you\'d weather — a decade-long depression would require deliberate adaptation. Start shoring up weak spots while conditions are still favorable.';
+  } else if (total >= 40) {
+    grade = 'Moderate exposure';     color = '#7A4E08'; bg = '#F7EDDA';
+    summary = 'You\'re not immediately threatened, but you\'re not well-buffered either. A sustained downturn would be genuinely painful. Two or three structural changes now could meaningfully change your outcome.';
+  } else if (total >= 20) {
+    grade = 'Vulnerable';            color = '#9B2B2B'; bg = '#F9EDED';
+    summary = 'Significant exposure across multiple dimensions. A serious shock would hit fast and hard. Building cash and eliminating variable-rate debt is worth more right now than any investment return you\'re chasing.';
+  } else {
+    grade = 'Critical risk';         color = '#9B2B2B'; bg = '#F9EDED';
+    summary = 'You\'re carrying maximum exposure with minimal buffer. In a 1930s-scale event, the window before a life-disrupting crisis is very short. Aggressive de-risking is the only priority — everything else waits.';
+  }
+
+  const sEl = document.getElementById('r-score');
+  sEl.textContent  = total;
+  sEl.style.color  = color;
+
+  const badge = document.getElementById('r-badge');
+  badge.textContent        = grade;
+  badge.style.background   = bg;
+  badge.style.color        = color;
+
+  document.getElementById('r-summary').textContent = summary;
+
+  // Breakdown
+  document.getElementById('r-breakdown').innerHTML = bd.map((b, i) => {
+    const c = b.pct >= 70 ? '#1D6B4A' : b.pct >= 40 ? '#7A4E08' : '#9B2B2B';
+    return `<div class="bd-card">
+      <div class="bd-label">${LABELS[i]}</div>
+      <div class="bd-val" style="color:${c}">${b.earned}<span style="font-size:13px;font-weight:400;color:#9B9790"> / ${b.max}</span></div>
+      <div class="bd-bar-bg"><div class="bd-bar-fill" style="width:${b.pct}%;background:${c}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Recs
+  document.getElementById('r-recs').innerHTML = genRecs(ans, bd)
+    .map(r => `<div class="rec-item">${r}</div>`).join('');
+
+  // Store score in URL hash for sharing
+  const params = Qs.map((_, i) => ans[i] !== undefined ? ans[i] : '').join(',');
+  history.replaceState(null, '', '#r=' + total + '&a=' + params);
+}
+
+function genRecs(ans, bd) {
+  const r = [];
+
+  if (bd[1].pct < 60) {
+    if (ans[1] === 0) r.push('Month 1: Open a high-yield savings account (Marcus, Ally, Wealthfront Cash) and set a standing auto-transfer. Even $300/mo builds a 1-month buffer in under a year.');
+    else r.push('Months 1–3: Make extending your liquid runway your single financial priority. Target 6 months minimum. Pause discretionary investing until you hit that floor — the protection is worth more than the returns.');
+  }
+
+  if (bd[2].pct < 60) {
+    if (ans[2] === 4) r.push('Immediately: Attack the highest-rate debt with everything you have. A 20% APR credit card is a guaranteed -20% return on capital. Every dollar paid off is a recession-proof return.');
+    else r.push('Month 1–2: Map every fixed payment obligation and calculate your true monthly floor. Then work to reduce it. In a downturn, every fixed payment tightens its grip as income shrinks.');
+  }
+
+  if (bd[3].pct < 60) {
+    if (ans[3] === 3) r.push('Month 2–3: Your field is discretionary — you\'ll be on the cut list early. Start building one freelance or consulting income stream now, even at $500–1,000/mo. That\'s your lifeline when the primary check stops.');
+    else if (ans[3] === 4) r.push('Immediate: Being unemployed entering a downturn is maximum exposure. Take any stable contract or employment to rebuild your buffer, even below your target rate. Optionality requires cash.');
+    else r.push('Month 2–3: Identify one skill you can freelance or productize independently. The goal isn\'t replacing your income — it\'s creating a second on-ramp that doesn\'t depend on a single employer surviving.');
+  }
+
+  if (bd[4].pct < 50) r.push('Month 2–3: Map the adjacencies from your current industry into more essential sectors. Your skills likely transfer further than you think — and repositioning is far easier before a downturn than during one.');
+
+  if (bd[5].pct < 60) r.push('Months 2–3: Invest 3–4 hours/week developing a second adjacent skill. A professional who can do two related things is twice as hireable in a thin market — and commands better rates in any market.');
+
+  if (bd[6].pct < 60) r.push('Month 1: Research one geographic arbitrage destination now. Mexico City, Medellín, or Lisbon cut cost of living 50–60% while you bill clients in USD. Knowing your exit reduces panic when conditions deteriorate.');
+
+  if (ans[0] !== undefined && ans[0] >= 2) r.push('Ongoing: With dependents, your cash buffer target is higher than standard advice. Six months is the baseline, twelve is the real target. Every other financial goal is secondary to this.');
+
+  if (ans[7] === 3) r.push('Month 1: Stress-test your housing position. Run the scenario where your income drops 50% — can you service the mortgage? If not, understand your exit options while the market is calm.');
+
+  if (bd[1].pct >= 70 && bd[2].pct >= 70) r.push('Months 2–3: Your liquidity and debt positions are strong. Start building a watchlist of distressed assets you\'d want to acquire in a downturn. The people who bought in 1932–1933 created generational wealth.');
+
+  if (r.length === 0) r.push('Your fundamentals are solid across the board. Stay liquid, maintain your professional network, and position yourself to acquire assets opportunistically as others are forced to de-leverage.');
+
+  return r.slice(0, 6);
+}
+
+/* ── SHARE ── */
+function shareScore() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: 'Recession Ready Score', text: 'I just took the recession readiness audit. How prepared are you?', url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    });
+  }
+}
+
+/* ── RESTORE FROM HASH ── */
+(function restoreFromHash() {
+  const hash = window.location.hash;
+  if (!hash.includes('r=')) return;
+  // Could parse and show results if sharing was implemented — left as TODO
+})();
+</script>
+</body>
+</html>
