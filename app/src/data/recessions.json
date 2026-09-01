@@ -1,0 +1,109 @@
+{
+  "sourceNote": "NBER business cycle dates, BLS unemployment rates, and Dow Jones / S&P 500 price history. Figures are rounded and market recovery times are approximate, in nominal terms.",
+  "recessions": [
+    {
+      "id": "great-depression",
+      "name": "The Great Depression",
+      "years": "1929–1933",
+      "durationMonths": 43,
+      "baselineUnemployment": 3.2,
+      "peakUnemployment": 24.9,
+      "gdpDecline": 26.7,
+      "marketDrawdown": 89,
+      "marketRecoveryMonths": 302,
+      "market": "Dow Jones Industrial Average",
+      "story": "Nine thousand banks failed and took deposits down with them — there was no FDIC. The Dow lost 89% and did not see its 1929 high again until 1954."
+    },
+    {
+      "id": "relapse-1937",
+      "name": "The 1937 Relapse",
+      "years": "1937–1938",
+      "durationMonths": 13,
+      "baselineUnemployment": 14.3,
+      "peakUnemployment": 19.0,
+      "gdpDecline": 18.2,
+      "marketDrawdown": 49,
+      "marketRecoveryMonths": 105,
+      "market": "Dow Jones Industrial Average",
+      "story": "The double dip nobody remembers. Spending cuts and tightening hit an economy still on crutches, and stocks were cut in half in twelve months."
+    },
+    {
+      "id": "oil-shock",
+      "name": "The Oil Shock",
+      "years": "1973–1975",
+      "durationMonths": 16,
+      "baselineUnemployment": 4.6,
+      "peakUnemployment": 9.0,
+      "gdpDecline": 3.2,
+      "marketDrawdown": 48,
+      "marketRecoveryMonths": 90,
+      "market": "S&P 500",
+      "story": "The OPEC embargo quadrupled oil prices while inflation ran hot — stagflation. Stocks fell by half and took the rest of the decade to climb back."
+    },
+    {
+      "id": "volcker-double-dip",
+      "name": "The Volcker Double-Dip",
+      "years": "1980–1982",
+      "durationMonths": 22,
+      "baselineUnemployment": 6.3,
+      "peakUnemployment": 10.8,
+      "gdpDecline": 2.7,
+      "marketDrawdown": 27,
+      "marketRecoveryMonths": 24,
+      "market": "S&P 500",
+      "story": "The Fed pushed rates near 20% to kill inflation and triggered two recessions back to back. Brutal for jobs and borrowers — but the market snapped back fast once rates fell."
+    },
+    {
+      "id": "early-90s",
+      "name": "The Early '90s Recession",
+      "years": "1990–1991",
+      "durationMonths": 8,
+      "baselineUnemployment": 5.2,
+      "peakUnemployment": 7.8,
+      "gdpDecline": 1.4,
+      "marketDrawdown": 20,
+      "marketRecoveryMonths": 7,
+      "market": "S&P 500",
+      "story": "An oil price spike after the invasion of Kuwait, a credit crunch, and the S&L cleanup. Short and shallow — but the jobless recovery dragged on for years."
+    },
+    {
+      "id": "dot-com",
+      "name": "The Dot-Com Bust",
+      "years": "2001",
+      "durationMonths": 8,
+      "baselineUnemployment": 3.9,
+      "peakUnemployment": 6.3,
+      "gdpDecline": 0.3,
+      "marketDrawdown": 49,
+      "marketRecoveryMonths": 86,
+      "market": "S&P 500",
+      "story": "GDP barely dipped, but the market carnage was real: the S&P halved and the Nasdaq lost 78%. Concentrated pain for tech workers and anyone holding growth stocks."
+    },
+    {
+      "id": "great-recession",
+      "name": "The Great Recession",
+      "years": "2007–2009",
+      "durationMonths": 18,
+      "baselineUnemployment": 4.7,
+      "peakUnemployment": 10.0,
+      "gdpDecline": 4.3,
+      "marketDrawdown": 57,
+      "marketRecoveryMonths": 65,
+      "market": "S&P 500",
+      "story": "A housing collapse became a global credit freeze. Nearly nine million jobs disappeared, home prices fell by a third, and the median spell of unemployment stretched past six months."
+    },
+    {
+      "id": "covid-crash",
+      "name": "The COVID Crash",
+      "years": "2020",
+      "durationMonths": 2,
+      "baselineUnemployment": 3.5,
+      "peakUnemployment": 14.7,
+      "gdpDecline": 10.1,
+      "marketDrawdown": 34,
+      "marketRecoveryMonths": 6,
+      "market": "S&P 500",
+      "story": "The fastest crash and fastest recovery on record. Twenty-two million jobs vanished in two months — a reminder that the shock you plan for is rarely the one you get."
+    }
+  ]
+}
