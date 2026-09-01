@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import {
   calculateRentVsBuy,
   defaultRentVsBuyInputs,
@@ -53,7 +53,7 @@ type ZipLookupState =
   | { state: "idle" }
   | { state: "loading" }
   | { state: "notFound" }
-  | ({ state: "found" } & ZipMatch);
+  | ({ state: "found"; detected?: boolean } & ZipMatch);
 
 const zipShardCache = new Map<string, Promise<Record<string, ZipEntry>>>();
 let zipMetaPromise: Promise<{ asOf: string }> | null = null;
@@ -210,8 +210,36 @@ export default function RentVsBuyCalculator() {
   const [zipCode, setZipCode] = useState("");
   const [zipLookup, setZipLookup] = useState<ZipLookupState>({ state: "idle" });
   const zipRequestRef = useRef(0);
+  const userTouchedRef = useRef(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const response = await fetch("/api/geo");
+        if (!response.ok) return;
+        const { zip } = (await response.json()) as { zip: string | null };
+        if (cancelled || !zip || userTouchedRef.current) return;
+        const match = await lookupZip(zip);
+        if (cancelled || !match || userTouchedRef.current) return;
+        setZipCode(zip);
+        setInputs((current) => ({
+          ...current,
+          homePrice: match.price,
+          ...(match.rent !== null ? { monthlyRent: match.rent } : {}),
+        }));
+        setZipLookup({ state: "found", detected: true, ...match });
+      } catch {
+        // Geo prefill is best-effort; the defaults stand.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleZipChange = (raw: string) => {
+    userTouchedRef.current = true;
     const zip = raw.replace(/\D/g, "").slice(0, 5);
     setZipCode(zip);
     const requestId = ++zipRequestRef.current;
@@ -247,14 +275,17 @@ export default function RentVsBuyCalculator() {
       : zipLookup.state === "notFound"
         ? "No Zillow data for that zip code — enter values manually."
         : zipLookup.state === "found"
-          ? `Using ${zipLookup.place}: typical home ${formatMoney(zipLookup.price)}${
+          ? `${zipLookup.detected ? `Detected your area — using` : `Using`} ${zipLookup.place}: typical home ${formatMoney(zipLookup.price)}${
               zipLookup.rent !== null
                 ? `, typical rent ${formatMoney(zipLookup.rent)}/mo`
                 : " (no rent data for this zip)"
-            } — Zillow, ${formatDataMonth(zipLookup.asOf)}.`
+            } — Zillow, ${formatDataMonth(zipLookup.asOf)}.${
+              zipLookup.detected ? " Not your area? Change the zip." : ""
+            }`
           : "Sets home price and rent to the typical values for your area. Data © Zillow (ZHVI / ZORI).";
 
   const updateNumber = (key: NumberInputKey, value: number) => {
+    userTouchedRef.current = true;
     setInputs((current) => ({
       ...current,
       [key]: Number.isFinite(value) ? value : 0,
