@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useRef, useState, type CSSProperties } from "react";
 import {
   calculateRentVsBuy,
   defaultRentVsBuyInputs,
@@ -38,6 +38,70 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
 
 function formatMoney(value: number) {
   return currencyFormatter.format(Math.round(value));
+}
+
+type ZipEntry = [price: number, rent: number | null, place: string];
+
+interface ZipMatch {
+  price: number;
+  rent: number | null;
+  place: string;
+  asOf: string;
+}
+
+type ZipLookupState =
+  | { state: "idle" }
+  | { state: "loading" }
+  | { state: "notFound" }
+  | ({ state: "found" } & ZipMatch);
+
+const zipShardCache = new Map<string, Promise<Record<string, ZipEntry>>>();
+let zipMetaPromise: Promise<{ asOf: string }> | null = null;
+
+async function fetchJson<T>(path: string): Promise<T> {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
+async function lookupZip(zip: string): Promise<ZipMatch | null> {
+  const shardKey = zip.slice(0, 2);
+  if (!zipShardCache.has(shardKey)) {
+    zipShardCache.set(
+      shardKey,
+      fetchJson<Record<string, ZipEntry>>(`/data/zip/${shardKey}.json`),
+    );
+  }
+  zipMetaPromise ??= fetchJson<{ asOf: string }>("/data/zip/meta.json");
+
+  let shard: Record<string, ZipEntry>;
+  try {
+    shard = await zipShardCache.get(shardKey)!;
+  } catch {
+    zipShardCache.delete(shardKey);
+    return null;
+  }
+
+  let asOf = "";
+  try {
+    asOf = (await zipMetaPromise).asOf;
+  } catch {
+    zipMetaPromise = null;
+  }
+
+  const entry = shard[zip];
+  if (!entry) return null;
+  return { price: entry[0], rent: entry[1], place: entry[2], asOf };
+}
+
+function formatDataMonth(asOf: string) {
+  const [year, month] = asOf.split("-").map(Number);
+  if (!year || !month) return "";
+  return new Date(Date.UTC(year, month - 1)).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 }
 
 function InputField({
@@ -143,6 +207,53 @@ export default function RentVsBuyCalculator() {
   const result = useMemo(() => calculateRentVsBuy(inputs), [inputs]);
   const breakEvenYear = useMemo(() => findBreakEvenYear(inputs), [inputs]);
 
+  const [zipCode, setZipCode] = useState("");
+  const [zipLookup, setZipLookup] = useState<ZipLookupState>({ state: "idle" });
+  const zipRequestRef = useRef(0);
+
+  const handleZipChange = (raw: string) => {
+    const zip = raw.replace(/\D/g, "").slice(0, 5);
+    setZipCode(zip);
+    const requestId = ++zipRequestRef.current;
+    if (zip.length < 5) {
+      setZipLookup({ state: "idle" });
+      return;
+    }
+    setZipLookup({ state: "loading" });
+    lookupZip(zip)
+      .then((match) => {
+        if (zipRequestRef.current !== requestId) return;
+        if (!match) {
+          setZipLookup({ state: "notFound" });
+          return;
+        }
+        setInputs((current) => ({
+          ...current,
+          homePrice: match.price,
+          ...(match.rent !== null ? { monthlyRent: match.rent } : {}),
+        }));
+        setZipLookup({ state: "found", ...match });
+      })
+      .catch(() => {
+        if (zipRequestRef.current === requestId) {
+          setZipLookup({ state: "notFound" });
+        }
+      });
+  };
+
+  const zipMessage =
+    zipLookup.state === "loading"
+      ? "Looking up Zillow data…"
+      : zipLookup.state === "notFound"
+        ? "No Zillow data for that zip code — enter values manually."
+        : zipLookup.state === "found"
+          ? `Using ${zipLookup.place}: typical home ${formatMoney(zipLookup.price)}${
+              zipLookup.rent !== null
+                ? `, typical rent ${formatMoney(zipLookup.rent)}/mo`
+                : " (no rent data for this zip)"
+            } — Zillow, ${formatDataMonth(zipLookup.asOf)}.`
+          : "Sets home price and rent to the typical values for your area. Data © Zillow (ZHVI / ZORI).";
+
   const updateNumber = (key: NumberInputKey, value: number) => {
     setInputs((current) => ({
       ...current,
@@ -193,6 +304,29 @@ export default function RentVsBuyCalculator() {
             >
               Reset defaults
             </button>
+          </div>
+
+          <div className="mb-4 rounded-lg border border-border bg-white/30 p-5">
+            <label htmlFor="zipCode" className="block">
+              <span className="mb-1.5 block text-[13px] font-medium text-ink-muted">
+                Prefill from your zip code
+              </span>
+              <span className="flex max-w-[160px] items-center rounded border border-border bg-white/55 transition-colors focus-within:border-amber focus-within:ring-2 focus-within:ring-amber/10">
+                <input
+                  id="zipCode"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="postal-code"
+                  placeholder="80202"
+                  value={zipCode}
+                  onChange={(event) => handleZipChange(event.target.value)}
+                  className="min-w-0 flex-1 bg-transparent px-3 py-2.5 font-mono text-[15px] text-ink outline-none"
+                />
+              </span>
+            </label>
+            <p className="mt-1.5 text-[11px] leading-relaxed text-ink-faint" aria-live="polite">
+              {zipMessage}
+            </p>
           </div>
 
           <div className="grid gap-4 rounded-lg border border-border bg-white/30 p-5 sm:grid-cols-2">
