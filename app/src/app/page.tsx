@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import Link from "next/link";
 import Hero from "@/components/Hero";
 import History from "@/components/History";
 import Quiz from "@/components/Quiz";
@@ -116,9 +117,17 @@ export default function Home() {
         >
           recession-ready.fyi
         </button>
-        <span className="text-xs text-ink-faint font-mono">
-          8 questions &middot; ~3 min
-        </span>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/rent-vs-buy"
+            className="font-mono text-[11px] uppercase tracking-[0.06em] text-ink-faint transition-colors hover:text-ink"
+          >
+            Rent vs. buy
+          </Link>
+          <span className="hidden text-xs text-ink-faint font-mono sm:inline">
+            8 questions &middot; ~3 min
+          </span>
+        </div>
       </nav>
 
       <main className="max-w-[700px] mx-auto px-6">
