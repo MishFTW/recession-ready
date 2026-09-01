@@ -119,12 +119,24 @@ export default function Home() {
         </button>
         <div className="flex items-center gap-4">
           <Link
+            href="/stress-test"
+            className="font-mono text-[11px] uppercase tracking-[0.06em] text-ink-faint transition-colors hover:text-ink"
+          >
+            Stress test
+          </Link>
+          <Link
+            href="/runway"
+            className="font-mono text-[11px] uppercase tracking-[0.06em] text-ink-faint transition-colors hover:text-ink"
+          >
+            Runway
+          </Link>
+          <Link
             href="/rent-vs-buy"
             className="font-mono text-[11px] uppercase tracking-[0.06em] text-ink-faint transition-colors hover:text-ink"
           >
             Rent vs. buy
           </Link>
-          <span className="hidden text-xs text-ink-faint font-mono sm:inline">
+          <span className="hidden text-xs text-ink-faint font-mono lg:inline">
             8 questions &middot; ~3 min
           </span>
         </div>
