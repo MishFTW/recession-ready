@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import {
   calculateRentVsBuy,
   defaultRentVsBuyInputs,
@@ -25,6 +25,9 @@ interface InputFieldProps {
   max?: number;
   step?: number;
   help?: string;
+  format?: "currency";
+  sliderMin?: number;
+  sliderMax?: number;
 }
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
@@ -48,7 +51,19 @@ function InputField({
   max,
   step = 1,
   help,
+  format,
+  sliderMin,
+  sliderMax,
 }: InputFieldProps) {
+  const isCurrency = format === "currency";
+  const hasSlider = sliderMin !== undefined && sliderMax !== undefined;
+  const fillPercent = hasSlider
+    ? Math.max(
+        0,
+        Math.min(100, ((value - sliderMin) / (sliderMax - sliderMin)) * 100),
+      )
+    : 0;
+
   return (
     <label htmlFor={id} className="block min-w-0">
       <span className="mb-1.5 block text-[13px] font-medium text-ink-muted">
@@ -62,13 +77,20 @@ function InputField({
         ) : null}
         <input
           id={id}
-          type="number"
+          type={isCurrency ? "text" : "number"}
           inputMode="decimal"
-          value={value}
+          value={isCurrency ? value.toLocaleString("en-US") : value}
           min={min}
           max={max}
           step={step}
-          onChange={(event) => onChange(id, Number(event.target.value))}
+          onChange={(event) =>
+            onChange(
+              id,
+              isCurrency
+                ? Number(event.target.value.replace(/[^0-9]/g, ""))
+                : Number(event.target.value),
+            )
+          }
           className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-[15px] text-ink outline-none"
         />
         {suffix ? (
@@ -77,6 +99,19 @@ function InputField({
           </span>
         ) : null}
       </span>
+      {hasSlider ? (
+        <input
+          type="range"
+          aria-label={`${label} slider`}
+          min={sliderMin}
+          max={sliderMax}
+          step={step}
+          value={Math.max(sliderMin, Math.min(sliderMax, value))}
+          onChange={(event) => onChange(id, Number(event.target.value))}
+          className="whimsy-slider mt-2 w-full"
+          style={{ "--fill": `${fillPercent}%` } as CSSProperties}
+        />
+      ) : null}
       {help ? <span className="mt-1 block text-[11px] text-ink-faint">{help}</span> : null}
     </label>
   );
@@ -169,6 +204,9 @@ export default function RentVsBuyCalculator() {
               prefix="$"
               min={0}
               step={10_000}
+              format="currency"
+              sliderMin={50_000}
+              sliderMax={3_000_000}
             />
             <InputField
               id="monthlyRent"
@@ -178,6 +216,9 @@ export default function RentVsBuyCalculator() {
               prefix="$"
               min={0}
               step={100}
+              format="currency"
+              sliderMin={500}
+              sliderMax={15_000}
             />
             <InputField
               id="downPaymentPercent"
@@ -187,6 +228,8 @@ export default function RentVsBuyCalculator() {
               suffix="%"
               min={0}
               max={100}
+              sliderMin={0}
+              sliderMax={100}
             />
             <InputField
               id="mortgageRate"
@@ -196,6 +239,8 @@ export default function RentVsBuyCalculator() {
               suffix="%"
               min={0}
               step={0.05}
+              sliderMin={0}
+              sliderMax={12}
             />
             <InputField
               id="holdingYears"
@@ -205,6 +250,8 @@ export default function RentVsBuyCalculator() {
               suffix="years"
               min={1}
               max={40}
+              sliderMin={1}
+              sliderMax={40}
             />
             <label htmlFor="mortgageTermYears" className="block min-w-0">
               <span className="mb-1.5 block text-[13px] font-medium text-ink-muted">
@@ -255,6 +302,7 @@ export default function RentVsBuyCalculator() {
               suffix="/ yr"
               min={0}
               step={100}
+              format="currency"
             />
             <InputField
               id="monthlyHoa"
@@ -265,6 +313,7 @@ export default function RentVsBuyCalculator() {
               suffix="/ mo"
               min={0}
               step={25}
+              format="currency"
             />
             <InputField
               id="maintenanceRate"
@@ -284,6 +333,7 @@ export default function RentVsBuyCalculator() {
               suffix="/ mo"
               min={0}
               step={25}
+              format="currency"
               help="Automatically stops at 20% equity."
             />
             <InputField
